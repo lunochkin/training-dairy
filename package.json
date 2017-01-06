@@ -1,0 +1,43 @@
+{
+  "name": "training-diary",
+  "version": "0.0.1",
+  "description": "training diary",
+  "repository": "https://github.com/maksim-lunochkin/training-diary",
+  "main": "./server/index.js",
+  "scripts": {
+    "server": "DEBUG=*,-nodemon*,-express*,-send,-compression nodemon -e js,json,html -w static -w server server/index.js",
+    "clean": "rimraf ./static/dist/*.js",
+    "watch": "npm run clean && webpack --config config/webpack.config.js --watch --progress --profile --bail",
+    "lint-server": "(eslint server) || true",
+    "lint-client": "(eslint client) || true",
+    "lint": "npm run lint-client && npm run lint-server",
+    "start": "npm run server & npm run watch"
+  },
+  "author": "@maksim-lunochkin",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "compression": "^1.6.2",
+    "debug": "^2.6.0",
+    "express": "^4.14.0",
+    "lodash": "^4.17.4",
+    "passport": "^0.3.2",
+    "passport-jwt": "^2.2.1",
+    "path": "^0.12.7",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-tap-event-plugin": "^2.0.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-preset-latest": "^6.16.0",
+    "babel-preset-react": "^6.16.0",
+    "eslint": "^3.12.2",
+    "html-webpack-plugin": "^2.26.0",
+    "nodemon": "^1.11.0",
+    "rimraf": "^2.5.4",
+    "webpack": "^1.14.0",
+    "webpack-merge": "^2.3.1"
+  }
+}

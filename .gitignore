@@ -1,0 +1,4 @@
+.idea
+node_modules
+static/index.html
+static/dist
