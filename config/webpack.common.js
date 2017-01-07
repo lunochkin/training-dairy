@@ -1,5 +1,6 @@
 let webpack = require('webpack');
 let HtmlWebpackPlugin = require('html-webpack-plugin');
+let ExtractTextPlugin = require('extract-text-webpack-plugin');
 let path = require('path');
 
 let root = function (args) {
@@ -10,8 +11,10 @@ let root = function (args) {
 
 module.exports = {
   entry: {
-    // vendor: './client/vendor.js',
-    bundle: root('../client/index.js')
+    'style': root('../client/entry/style.js'),
+    'vendor.style': root('../client/entry/vendor.style.js'),
+    vendor: root('../client/entry/vendor.js'),
+    index: root('../client/index.js')
   },
   output: {
     filename: '[name].[chunkHash].js',
@@ -22,7 +25,6 @@ module.exports = {
     extensions: ["", ".js"],
     root: ["static"],
     modulesDirectories: ["node_modules"]
-    // alias: {'react/lib/ReactMount': 'react-dom/lib/ReactMount'}
   },
   module: {
     loaders: [
@@ -33,14 +35,23 @@ module.exports = {
         query: {
           presets: ['react', 'latest']
         }
+      },
+      {
+        test: /\.css$/,
+        loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+      },
+      {
+        test: /.(png|woff(2)?|eot|ttf|svg)([a-z0-9]+)?$/,
+        loader: 'url-loader?limit=100000'
       }
     ]
   },
   plugins: [
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   name: ['bundle', 'vendor'],
-    //   minChunks: Infinity
-    // }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: ['index', 'vendor'],
+      minChunks: Infinity
+    }),
+    new ExtractTextPlugin("[name].css"),
     new HtmlWebpackPlugin({
       template: root('../client/index.html'),
       filename: '../index.html'
