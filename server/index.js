@@ -7,11 +7,9 @@ let debug = require('debug')('server');
 let path = require('path');
 let passport = require('passport');
 
-
-
+app.use(compression());
 app.use(express.static('static'));
 app.use(bodyParser.json());
-app.use(compression());
 app.use(passport.initialize());
 
 
