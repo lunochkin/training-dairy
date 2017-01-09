@@ -1,9 +1,16 @@
 import * as React from 'react';
-import { Navbar, NavItem, Nav, Button } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { Navbar, NavItem, Nav } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { IndexLink } from 'react-router';
 
-export default () => {
+import { getAuthToken } from '../selectors';
+
+export default connect(
+  state => ({
+    token: getAuthToken(state)
+  })
+)(props => {
   return (
     <Navbar>
       <Navbar.Brand>
@@ -15,10 +22,22 @@ export default () => {
         </LinkContainer>
       </Nav>
       <Nav className="pull-right">
-        <LinkContainer to="/signup">
-          <NavItem>Sign Up</NavItem>
-        </LinkContainer>
+        {!props.token &&
+          <LinkContainer to="/register">
+            <NavItem>Register</NavItem>
+          </LinkContainer>
+        }
+        {!props.token &&
+          <LinkContainer to="/login">
+            <NavItem>Log In</NavItem>
+          </LinkContainer>
+        }
+        {props.token &&
+          <LinkContainer to="/logout">
+            <NavItem>Log Out</NavItem>
+          </LinkContainer>
+        }
       </Nav>
     </Navbar>
   );
-};
+});

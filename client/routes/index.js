@@ -1,12 +1,17 @@
 import indexRoute from './index/index.js';
 import diaryRoute from './diary';
-import signupRoute from './signup';
+import registerRoute from './register';
+import loginRoute from './login';
+import logoutRoute from './logout';
+
 
 export default {
   path: '/',
   indexRoute,
   childRoutes: [
     diaryRoute,
-    signupRoute
+    registerRoute,
+    loginRoute,
+    logoutRoute
   ],
 };

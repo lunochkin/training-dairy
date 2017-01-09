@@ -34,7 +34,8 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel-loader',
         query: {
-          presets: ['react', 'latest']
+          presets: ['react', 'latest'],
+          plugins: ['transform-object-rest-spread']
         }
       },
       {
