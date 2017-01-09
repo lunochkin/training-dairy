@@ -1,9 +1,19 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 import { Button, FormControl, Form, FormGroup, Col, ControlLabel } from 'react-bootstrap';
 import Layout from '../../../components/Layout';
 import axios from 'axios';
+import { browserHistory } from 'react-router';
+import { saveAuthToken } from '../../../modules/global';
 
-export default class extends React.Component {
+export default connect(
+  state => ({}),
+  dispatch => ({
+    saveAuthToken(token) {
+      dispatch(saveAuthToken(token));
+    }
+  })
+)(class extends React.Component {
   constructor(props) {
     super(props);
 
@@ -28,9 +38,10 @@ export default class extends React.Component {
   onSubmit(e) {
     e.preventDefault();
 
-    console.log('on submit');
-
-    axios.post('/api/register', this.state).then(console.log);
+    axios.post('/api/register', this.state).then(response => {
+      this.props.saveAuthToken(response.data);
+      browserHistory.push('/');
+    });
   }
 
   render() {
@@ -68,4 +79,4 @@ export default class extends React.Component {
       </Layout>
     );
   }
-}
+});

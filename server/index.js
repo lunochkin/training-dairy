@@ -29,7 +29,8 @@ mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/training-diary');
 
 require('./models/User');
-
+require('./models/Exercise');
+require('./models/Record');
 
 
 app.use(compression());

@@ -1,4 +1,4 @@
-import RegisterPage from './components/RegisterPage';
+import RegisterPage from './containers/RegisterPage';
 
 export default {
   path: '/register',

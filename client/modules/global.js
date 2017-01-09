@@ -7,12 +7,10 @@ export default (state = {token: ''}, action) => {
   return state;
 };
 
-const setAuthToken = token => {
-  return {
-    type: SET_AUTH_TOKEN,
-    token
-  };
-};
+const setAuthToken = token => ({
+  type: SET_AUTH_TOKEN,
+  token
+});
 
 export const saveAuthToken = token => dispatch => {
   dispatch(setAuthToken(token));

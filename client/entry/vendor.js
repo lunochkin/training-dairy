@@ -1,3 +1,3 @@
-require('react');
-require('react-dom');
-require('react-bootstrap');
+import 'react';
+import 'react-dom';
+import 'react-bootstrap';
