@@ -11,7 +11,7 @@ const setAuthToken = token => {
   return {
     type: SET_AUTH_TOKEN,
     token
-  }
+  };
 };
 
 export const saveAuthToken = token => dispatch => {

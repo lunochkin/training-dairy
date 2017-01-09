@@ -1,4 +1,6 @@
-require('dotenv').config({path: __dirname + '/.env'});
+const path = require('path');
+
+require('dotenv').config({path: path.join(__dirname, '.env')});
 
 const express = require('express');
 const compression = require('compression');
@@ -6,7 +8,6 @@ const app = express();
 const bodyParser = require("body-parser");
 const _ = require('lodash');
 const debug = require('debug')('server');
-const path = require('path');
 const passport = require('passport');
 const api = require('./api');
 const mongoose = require('mongoose');

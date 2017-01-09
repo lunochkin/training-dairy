@@ -41,7 +41,7 @@ export default connect(
     axios.post('/api/login', this.state).then(response => {
       this.props.saveAuthToken(response.data);
       browserHistory.push('/');
-    })
+    });
   }
 
   render() {
