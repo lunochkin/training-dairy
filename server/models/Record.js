@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 
 const recordSchema = new Schema({
   exercise: Schema.ObjectId,
-  date: Date
+  date: Date,
+  reps: Array
 }, {
   timestamps: true
 });

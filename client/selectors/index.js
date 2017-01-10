@@ -7,7 +7,10 @@ export const getExercises = state => _get(state, ['diary', 'exercises', 'result'
 
 export const getOneRecord = (state, id) => {
   let one = _get(state, ['diary', 'records', 'entities', 'records', id]);
-  one.exercise = getOneExercise(state, one.exercise);
-  return one;
+  return {...one, exercise: getOneExercise(state, one.exercise)};
 };
 export const getRecords = state => _get(state, ['diary', 'records', 'result']).map(id => getOneRecord(state, id));
+
+export const getDraft = state => _get(state, ['diary', 'draft']);
+export const isDairyAdding = state => getDraft(state).adding;
+export const getRepsArray = state => _get(getDraft(state), ['data', 'reps']);

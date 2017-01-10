@@ -7,4 +7,16 @@ router.get('/', (req, res) => {
   });
 });
 
+router.post('/', (req, res) => {
+  mongoose.model('Record').create(req.body).then(result => {
+    res.json(result);
+  });
+});
+
+router.delete('/:id', (req, res) => {
+  mongoose.model('Record').remove({_id: mongoose.Types.ObjectId(req.param('id'))}).then(() => {
+    res.json(true);
+  });
+});
+
 module.exports = router;
