@@ -7,20 +7,14 @@ import { getAuthToken } from './selectors';
 import { saveAuthToken } from './modules/global';
 
 
+store.dispatch(saveAuthToken(localStorage.getItem('authToken')));
+
+
 const MainContainer = connect(
   state => ({
     token: getAuthToken(state)
-  }),
-  dispatch => ({
-    saveAuthToken(token) {
-      dispatch(saveAuthToken(token));
-    }
   })
 )(class extends React.Component {
-  componentDidMount() {
-    this.props.saveAuthToken(localStorage.getItem('authToken'));
-  }
-
   render() {
     return (
       <div className="main-container">

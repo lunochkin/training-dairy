@@ -21,7 +21,9 @@ opts.jwtFromRequest = ExtractJwt.fromAuthHeader('Authorization');
 opts.secretOrKey = config.jwtSecret;
 opts.ignoreExpiration = true;
 passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
-  done(null, {email: jwt_payload.email});
+  mongoose.model('User').findOne({email: jwt_payload.email}).then(user => {
+    done(null, user);
+  });
 }));
 
 

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { normalize, schema } from 'normalizr';
-import { getDraft } from '../selectors';
+import { getDraft, getAuthToken } from '../selectors';
 import _unset from 'lodash/unset';
 import moment from 'moment';
 
@@ -132,8 +132,9 @@ const deserializeRecord = one => {
   return one;
 };
 
-export const loadRecords = cb => dispatch => {
-  axios.get(`/api/records`).then(response => {
+export const loadRecords = cb => (dispatch, getState) => {
+  let token = getAuthToken(getState());
+  axios.get('/api/records', {headers: {Authorization: 'JWT ' + token}}).then(response => {
     dispatch(
       setRecords(
         normalize(response.data.map(deserializeRecord), [record])
@@ -176,7 +177,8 @@ export const setDraftDate = date => ({
 });
 
 export const saveRecordDraft = cb => (dispatch, getState) => {
-  axios.post('/api/records', getDraft(getState()).data).then(response => {
+  let token = getAuthToken(getState());
+  axios.post('/api/records', getDraft(getState()).data, {headers: {Authorization: 'JWT ' + token}}).then(response => {
     dispatch(
       addRecord(
         normalize(deserializeRecord(response.data), record)
@@ -190,8 +192,9 @@ export const saveRecordDraft = cb => (dispatch, getState) => {
   });
 };
 
-export const removeRecord = (id, cb) => dispatch => {
-  axios.delete(`/api/records/${id}`).then(() => {
+export const removeRecord = (id, cb) => (dispatch, getState) => {
+  let token = getAuthToken(getState());
+  axios.delete(`/api/records/${id}`, {headers: {Authorization: 'JWT ' + token}}).then(() => {
     dispatch(removeRecordLocal(id));
 
     if (cb) {
