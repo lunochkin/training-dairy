@@ -2,6 +2,7 @@ import axios from 'axios';
 import { normalize, schema } from 'normalizr';
 import { getDraft } from '../selectors';
 import _unset from 'lodash/unset';
+import moment from 'moment';
 
 
 const record = new schema.Entity('records', {}, {idAttribute: '_id'});
@@ -17,11 +18,13 @@ const CANCEL_ADDING = 'diary/CANCEL_ADDING';
 const ADD_REPS = 'diary/ADD_REPS';
 const SET_REPS = 'diary/SET_REPS';
 const SET_DRAFT_EXERCISE = 'diary/SET_DRAFT_EXERCISE';
+const SET_DRAFT_DATE = 'diary/SET_DRAFT_DATE';
 
 
 const baseDraft = {
   adding: false,
   data: {
+    date: moment().startOf('day').toDate(),
     exercise: undefined,
     reps: []
   }
@@ -66,7 +69,7 @@ export default (state = initialState, action) => {
     case OPEN_ADDING:
       return {...state, draft: {...state.draft, adding: true}};
     case CANCEL_ADDING:
-      return {...state, draft: baseDraft};
+      return {...state, draft: {...baseDraft, data: {...baseDraft.data, date: state.draft.data.date}}};
     case ADD_REPS:
       return {...state, draft: {
         ...state.draft,
@@ -81,6 +84,8 @@ export default (state = initialState, action) => {
       return {...state, draft: {...state.draft, data: {...state.draft.data, reps}}};
     case SET_DRAFT_EXERCISE:
       return {...state, draft: {...state.draft, data: {...state.draft.data, exercise: action.exercise}}};
+    case SET_DRAFT_DATE:
+      return {...state, draft: {...state.draft, data: {...state.draft.data, date: action.date}}};
     default:
       return state;
   }
@@ -121,11 +126,17 @@ const removeRecordLocal = id => ({
   id
 });
 
+
+const deserializeRecord = one => {
+  one.date = moment(one.date).toDate();
+  return one;
+};
+
 export const loadRecords = cb => dispatch => {
   axios.get(`/api/records`).then(response => {
     dispatch(
       setRecords(
-        normalize(response.data, [record])
+        normalize(response.data.map(deserializeRecord), [record])
       )
     );
 
@@ -159,11 +170,16 @@ export const setReps = (index, reps) => ({
   reps
 });
 
+export const setDraftDate = date => ({
+  type: SET_DRAFT_DATE,
+  date
+});
+
 export const saveRecordDraft = cb => (dispatch, getState) => {
   axios.post('/api/records', getDraft(getState()).data).then(response => {
     dispatch(
       addRecord(
-        normalize(response.data, record)
+        normalize(deserializeRecord(response.data), record)
       )
     );
     dispatch(cancelAdding());

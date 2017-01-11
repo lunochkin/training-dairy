@@ -3,19 +3,24 @@ import { connect } from 'react-redux';
 import Layout from '../../../components/Layout';
 import Record from '../components/Record';
 import RecordInput from '../components/RecordInput';
-import { getRecords, isDairyAdding } from '../../../selectors';
-import { openAdding } from '../../../modules/diary';
+import { getRecordsByDay, isDairyAdding, getDraftDate } from '../../../selectors';
+import { openAdding, setDraftDate } from '../../../modules/diary';
 import { Col, Row, Button } from 'react-bootstrap';
 import InfiniteCalendar from 'react-infinite-calendar';
 
+
 export default connect(
-  state => ({
-    records: getRecords(state),
-    adding: isDairyAdding(state)
-  }),
+  state => {
+    let date = getDraftDate(state);
+    return {
+      records: getRecordsByDay(state, date),
+      date,
+      adding: isDairyAdding(state)
+    };
+  },
   dispatch => ({
-    onDateSelect(date) {
-      console.log({date});
+    onDateSelect(mDate) {
+      dispatch(setDraftDate(mDate.toDate()));
     },
     openAdding() {
       dispatch(openAdding());
@@ -32,7 +37,7 @@ export default connect(
             <InfiniteCalendar
               width={400}
               height={400}
-              selectedDate={Date.now()}
+              selectedDate={this.props.date}
               disabledDays={[0, 6]}
               keyboardSupport={true}
               onSelect={this.props.onDateSelect}

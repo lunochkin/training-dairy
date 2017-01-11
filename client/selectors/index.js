@@ -10,7 +10,9 @@ export const getOneRecord = (state, id) => {
   return {...one, exercise: getOneExercise(state, one.exercise)};
 };
 export const getRecords = state => _get(state, ['diary', 'records', 'result']).map(id => getOneRecord(state, id));
+export const getRecordsByDay = (state, date) => getRecords(state).filter(record => record.date && record.date.getTime() === date.getTime());
 
 export const getDraft = state => _get(state, ['diary', 'draft']);
 export const isDairyAdding = state => getDraft(state).adding;
 export const getRepsArray = state => _get(getDraft(state), ['data', 'reps']);
+export const getDraftDate = state => _get(state, ['diary', 'draft', 'data', 'date']);
