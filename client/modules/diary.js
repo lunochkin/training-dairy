@@ -26,7 +26,7 @@ const baseDraft = {
   data: {
     date: moment().startOf('day').toDate(),
     exercise: undefined,
-    reps: []
+    reps: ['']
   }
 };
 

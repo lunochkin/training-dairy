@@ -12,7 +12,7 @@ export default connect(
   })
 )(props => {
   return (
-    <Navbar>
+    <Navbar fluid={true}>
       <Navbar.Brand>
         <IndexLink to="/">TD</IndexLink>
       </Navbar.Brand>

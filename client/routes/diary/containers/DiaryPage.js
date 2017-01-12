@@ -27,23 +27,45 @@ export default connect(
     }
   })
 )(class extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.toggleCalendar = this.toggleCalendar.bind(this);
+
+    this.state = {
+      calendarVisible: true
+    };
+  }
+
+  toggleCalendar() {
+    this.setState({
+      calendarVisible: !this.state.calendarVisible
+    });
+  }
+
   render() {
     return (
       <Layout>
         <h1>Diary</h1>
 
+        <div className="visible-xs-block">
+          <Button onClick={this.toggleCalendar}>{this.state.calendarVisible ? 'Close calendar' : 'Show calendar'}</Button>
+        </div>
+
         <Row>
-          <Col xs={6}>
+          {this.state.calendarVisible &&
+          <Col sm={6} xs={12}>
             <InfiniteCalendar
-              width={400}
-              height={400}
+              showHeader={false}
               selectedDate={this.props.date}
+              width={290}
               disabledDays={[0, 6]}
               keyboardSupport={true}
               onSelect={this.props.onDateSelect}
             />
           </Col>
-          <Col xs={6}>
+          }
+          <Col sm={6} xs={12}>
             <h3>Records</h3>
 
             <Button onClick={this.props.openAdding}>Add</Button>

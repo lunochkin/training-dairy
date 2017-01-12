@@ -6,11 +6,9 @@ import { Well } from 'react-bootstrap';
 export default props => {
   return (
     <div>
-      <Navbar/>
-      <div className="container">
-        <Well>
-          {props.children}
-        </Well>
+      <Navbar fluid={true}/>
+      <div className="container-fluid">
+        {props.children}
       </div>
     </div>
   );
